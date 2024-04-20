@@ -16,7 +16,12 @@ const db = getFirestore(firebase);
 export const createPost = async (req, res, next) => {
     try {
         const data = req.body;
-        await addDoc(collection(db, "posts"), data);
+        const docRef = await addDoc(collection(db, "posts"), data);
+
+        // assing postId to the post
+        const postId = docRef.id;
+        await updateDoc(doc(db, "posts", postId), { postId });
+
         res.status(200).send("post created successfully");
     } catch (error) {
         res.status(400).send(error.message);
@@ -33,11 +38,12 @@ export const getPosts = async (req, res, next) => {
         } else {
             posts.forEach((doc) => {
                 const post = new Post(
-                    doc.id,
-                    // doc.data().postId,
-                    doc.data().postImg,
+                    // doc.id,
                     doc.data().userId,
                     doc.data().userName,
+                    doc.data().wallet,
+                    doc.data().postId,
+                    doc.data().postImg,
                     doc.data().description,
                     doc.data().likes,
                     doc.data().funded,
@@ -95,14 +101,20 @@ export const addBettor = async (req, res, next) => {
             // Get the existing bettors data
             const existingData = postSnap.data().bettors || {};
             
+            // Checks if the new bettor already exists (checks by userId)
+            const bettorExists = existingData.find(bettor => bettor.userId === newBettor.userId);
+            if (bettorExists) {
+                return res.status(400).send("Bettor already exists");
+            }
+
             existingData.push(newBettor);
 
             // Update the post document with the updated bettors object
             await updateDoc(postRef, { bettors: existingData});
 
-            res.status(200).send("New post added successfully");
+            res.status(200).send("New bettor added successfully");
         } else {
-            res.status(404).send("Post not found");
+            res.status(404).send("Data not found");
         }
     } catch (error) {
         res.status(400).send(error.message);

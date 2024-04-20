@@ -1,9 +1,10 @@
 class Posts {
-    constructor(postId, postImg, userId, userName, description, likes, funded, bettors) {
-        (this.postId = postId),
-        (this.postImg = postImg),
+    constructor( userId, userName, wallet, postId, postImg, description, likes, funded, bettors) {
         (this.userId = userId),
         (this.userName = userName),
+        (this.wallet = wallet),
+        (this.postId = postId),
+        (this.postImg = postImg),
         (this.description = description),
         (this.likes = likes),
         (this.funded = funded),
