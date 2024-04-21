@@ -146,6 +146,39 @@ export const patchPost = async (req, res, next) => {
     }
 };
 
+export const getUserPosts = async (req, res, next) => {
+    try {
+        const userId = req.params.userId;
+        const posts = await getDocs(collection(db, "posts"));
+        const postArray = [];
+
+        if (posts.empty) {
+            res.status(400).send("No Posts found");
+        } else {
+            posts.forEach((doc) => {
+                if (doc.data().userId === userId) {
+                    const post = new Post(
+                        doc.data().userId,
+                        doc.data().userName,
+                        doc.data().wallet,
+                        doc.data().postId,
+                        doc.data().postImg,
+                        doc.data().description,
+                        doc.data().likes,
+                        doc.data().funded,
+                        doc.data().bettors
+                    );
+                    postArray.push(post);
+                }
+            });
+
+            res.status(200).send(postArray);
+        }
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 export const deletePost = async (req, res, next) => {
     try {
         const id = req.params.id;
