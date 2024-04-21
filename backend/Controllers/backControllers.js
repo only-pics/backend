@@ -41,6 +41,8 @@ export const getPosts = async (req, res, next) => {
                     // doc.id,
                     doc.data().userId,
                     doc.data().userName,
+                    doc.data().userImg,
+                    doc.data().userBio,
                     doc.data().wallet,
                     doc.data().postId,
                     doc.data().postImg,
@@ -160,6 +162,8 @@ export const getUserPosts = async (req, res, next) => {
                     const post = new Post(
                         doc.data().userId,
                         doc.data().userName,
+                        doc.data().userImg,
+                        doc.data().userBio,
                         doc.data().wallet,
                         doc.data().postId,
                         doc.data().postImg,

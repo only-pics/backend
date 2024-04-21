@@ -1,6 +1,8 @@
 export type PostDataType = {
     userId: string;
     userName: string;
+    userImg: string;
+    userBio: string;
     wallet: string;
     postId: string;
     postImg: string;
