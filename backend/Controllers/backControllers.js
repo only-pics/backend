@@ -104,10 +104,10 @@ export const addBettor = async (req, res, next) => {
             const existingData = postSnap.data().bettors || {};
             
             // Checks if the new bettor already exists (checks by userId)
-            const bettorExists = existingData.find(bettor => bettor.userId === newBettor.userId);
-            if (bettorExists) {
-                return res.status(400).send("Bettor already exists");
-            }
+            // const bettorExists = existingData.find(bettor => bettor.userId === newBettor.userId);
+            // if (bettorExists) {
+            //     return res.status(400).send("Bettor already exists");
+            // }
 
             existingData.push(newBettor);
 
